@@ -56,7 +56,32 @@ function displayPlaceDetails(placesVisitedToDisplay) {
   placeList.html(htmlForPlaceInfo);
 }
 
+function showPlace(placeId) {
+  const place = placesVisited.findPlace(placeId);
+  $("#show-places").show();
+  $(".city").html(place.name);
+  $(".country").html(place.location);
+  $(".date").html(place.timeOfYear);
+  let buttons = $("#buttons");
+  buttons.empty();
+  buttons.append(
+    "<button class='deleteButton' id=" + place.id + ">Delete</button>"
+  );
+}
+
+function attachPlaceListeners() {
+  $("ul#places").on("click", "li", function () {
+    showPlace(this.id);
+  });
+  $("#buttons").on("click", ".deleteButton", function () {
+    placesVisited.deletePlace(this.id);
+    $("#show-places").hide();
+    displayPlaceDetails(placesVisited);
+  });
+}
+
 $(document).ready(function () {
+  attachPlaceListeners();
   $("form#new-place").submit(function (event) {
     event.preventDefault();
     const inputtedCity = $("input#new-city").val();
