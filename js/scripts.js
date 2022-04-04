@@ -41,3 +41,29 @@ function Place(name, location, timeOfYear) {
 let placesvisited = new PlacesVisited();
 let place = new Place("Rome", "Italy", "Summer");
 placesvisited.addPlace(place);
+
+// UI Logic
+
+let placesVisited = new PlacesVisited();
+
+function displayPlaceDetails(placesVisitedToDisplay) {
+  let placeList = $("ul#places");
+  let htmlForPlaceInfo = "";
+  Object.keys(placesVisitedToDisplay.places).forEach(function (key) {
+    const place = placesVisitedToDisplay.findPlace(key);
+    htmlForPlaceInfo += "<li id=" + place.id + ">" + place.name + "</li>";
+  });
+  placeList.html(htmlForPlaceInfo);
+}
+
+$(document).ready(function () {
+  $("form#new-place").submit(function (event) {
+    event.preventDefault();
+    const inputtedCity = $("input#new-city").val();
+    const inputtedCountry = $("input#new-country").val();
+    const inputtedDate = $("input#new-date").val();
+    let newPlace = new Place(inputtedCity, inputtedCountry, inputtedDate);
+    placesVisited.addPlace(newPlace);
+    displayPlaceDetails(placesVisited);
+  });
+});
